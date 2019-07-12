@@ -45,14 +45,15 @@ import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -216,10 +217,10 @@ public class JDAStateEventAdapter extends EventAdapter {
             }
 
             for (Member member : guild.getMembers()) {
-                if (member.getJoinDate().toEpochSecond() > thirtyMinutesAgo) {
+                if (member.getTimeJoined().toEpochSecond() > thirtyMinutesAgo) {
                     if (!RoleUtil.hasRole(member, autorole)) {
                         updatedUsers++;
-                        guild.getController().addSingleRoleToMember(member, autorole)
+                        guild.modifyMemberRoles(member, Collections.singletonList(autorole), null)
                             .queue();
                     }
                 }

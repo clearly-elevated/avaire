@@ -24,7 +24,10 @@ package com.avairebot.handlers;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.GenericEvent;
+
+import javax.annotation.Nonnull;
 
 public class GenericEventHandler extends EventHandler {
 
@@ -38,7 +41,7 @@ public class GenericEventHandler extends EventHandler {
     }
 
     @Override
-    public void onGenericEvent(Event event) {
+    public void onGenericEvent(@Nonnull GenericEvent event) {
         Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
     }
 }

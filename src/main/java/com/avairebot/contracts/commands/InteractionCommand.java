@@ -33,16 +33,14 @@ import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -160,20 +158,17 @@ public abstract class InteractionCommand extends Command {
 
         int imageIndex = lottery.getWinner();
 
-        MessageBuilder messageBuilder = new MessageBuilder();
-        EmbedBuilder embedBuilder = context.makeEmbeddedMessage()
-            .setImage("attachment://" + getClass().getSimpleName() + "-" + imageIndex + ".gif")
-            .setDescription(buildMessage(context, user, target))
-            .setColor(getInteractionColor())
-            .requestedBy(context)
-            .build();
-
-        messageBuilder.setEmbed(embedBuilder.build());
-
         try {
-            InputStream stream = new URL(interactionImages.get(imageIndex)).openStream();
-
-            context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
+            context.getChannel().sendFile(
+                new URL(interactionImages.get(imageIndex)).openStream(),
+                getClass().getSimpleName() + "-" + imageIndex + ".gif"
+            ).embed(context.makeEmbeddedMessage()
+                .setImage("attachment://" + getClass().getSimpleName() + "-" + imageIndex + ".gif")
+                .setDescription(buildMessage(context, user, target))
+                .setColor(getInteractionColor())
+                .requestedBy(context)
+                .buildEmbed()
+            ).queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

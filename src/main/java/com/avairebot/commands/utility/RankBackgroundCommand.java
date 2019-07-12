@@ -38,8 +38,7 @@ import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.vote.VoteCacheEntity;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -229,19 +228,17 @@ public class RankBackgroundCommand extends Command {
             .setRank("1")
             .setPercentage(percentage);
 
-        MessageBuilder message = new MessageBuilder();
-        EmbedBuilder embed = new EmbedBuilder()
-            .setTitle(context.i18n("exampleTitle", background.getName()))
-            .setFooter(context.i18n("exampleFooter", background.getName(), background.getCost()), null)
-            .setImage("attachment://rank-background.png")
-            .setColor(background.getBackgroundColors().getExperienceForegroundColor());
-        message.setEmbed(embed.build());
-
         try {
             //noinspection ConstantConditions
             context.getMessageChannel().sendFile(
                 new ByteArrayInputStream(render.renderToBytes()),
-                "rank-background.png", message.build()
+                "rank-background.png"
+            ).embed(new EmbedBuilder()
+                .setTitle(context.i18n("exampleTitle", background.getName()))
+                .setFooter(context.i18n("exampleFooter", background.getName(), background.getCost()), null)
+                .setImage("attachment://rank-background.png")
+                .setColor(background.getBackgroundColors().getExperienceForegroundColor())
+                .build()
             ).queue();
         } catch (IOException e) {
             log.error("Failed to render background image: {}", e.getMessage(), e);

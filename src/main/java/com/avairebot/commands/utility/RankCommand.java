@@ -44,10 +44,9 @@ import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -278,17 +277,15 @@ public class RankCommand extends Command {
             author.getId()
         );
 
-        MessageBuilder message = new MessageBuilder();
-        EmbedBuilder embed = new EmbedBuilder()
-            .setImage("attachment://" + attachmentName)
-            .setColor(background.getBackgroundColors().getExperienceForegroundColor());
-        message.setEmbed(embed.build());
-
         try {
             //noinspection ConstantConditions
             context.getMessageChannel().sendFile(
                 new ByteArrayInputStream(render.renderToBytes()),
-                attachmentName, message.build()
+                attachmentName
+            ).embed(new EmbedBuilder()
+                .setImage("attachment://" + attachmentName)
+                .setColor(background.getBackgroundColors().getExperienceForegroundColor())
+                .build()
             ).queue();
         } catch (IOException e) {
             e.printStackTrace();

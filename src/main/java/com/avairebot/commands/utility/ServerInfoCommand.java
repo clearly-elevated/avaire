@@ -29,9 +29,9 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -80,7 +80,7 @@ public class ServerInfoCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         Guild guild = context.getGuild();
-        Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
+        Carbon time = Carbon.createFromOffsetDateTime(guild.getTimeCreated());
 
         PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(guild.getSelfMember().getRoles()),
             new MessageEmbed.Field(context.i18n("fields.id"), guild.getId(), true),

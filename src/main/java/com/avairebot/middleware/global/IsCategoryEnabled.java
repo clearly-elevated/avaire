@@ -30,7 +30,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;

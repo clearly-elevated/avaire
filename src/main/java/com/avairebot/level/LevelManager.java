@@ -37,12 +37,12 @@ import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -345,11 +345,11 @@ public class LevelManager {
                     return;
                 }
 
-                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue(aVoid -> {
+                //noinspection ConstantConditions
+                message.getGuild().modifyMemberRoles(message.getMember(), roles, null).queue(aVoid -> {
                     if (!guild.isLevelHierarchy()) {
                         return;
                     }
-
 
                     List<Integer> levelKeys = new ArrayList<>(guild.getLevelRoles().keySet());
                     Collections.sort(levelKeys);
@@ -379,7 +379,7 @@ public class LevelManager {
 
                     if (!rolesToRemove.isEmpty()) {
                         ScheduleHandler.getScheduler().schedule(() -> {
-                            message.getGuild().getController().removeRolesFromMember(message.getMember(), rolesToRemove).queue();
+                            message.getGuild().modifyMemberRoles(message.getMember(), null, rolesToRemove).queue();
                         }, 500, TimeUnit.MILLISECONDS);
                     }
                 });

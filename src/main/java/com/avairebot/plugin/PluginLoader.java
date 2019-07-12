@@ -26,7 +26,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nullable;
 import java.io.*;
