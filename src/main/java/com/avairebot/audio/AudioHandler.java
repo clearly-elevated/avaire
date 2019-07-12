@@ -42,7 +42,6 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import lavalink.client.io.Link;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -277,15 +276,16 @@ public class AudioHandler {
     public int getTotalListenersSize() {
         int total = 0;
 
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-                if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
-                    total++;
-                }
-            }
-
-            return total;
-        }
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+//            for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+//                if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
+//                    total++;
+//                }
+//            }
+//
+//            return total;
+//        }
 
         for (GuildMusicManager manager : musicManagers.values()) {
             if (manager.getLastActiveMessage() == null) {

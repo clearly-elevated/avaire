@@ -124,33 +124,34 @@ public class BotStatisticsCommand extends SystemCommand {
     }
 
     private String buildLavalinkStats() {
-        if (!LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            return "*Lavalink is disabled*";
-        }
-
-        int playing;
-        int total;
-
-        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
-            playing = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream().mapToInt(node -> {
-                if (node.getStats() == null) {
-                    return 0;
-                }
-                return node.getStats().getPlayingPlayers();
-            }).sum();
-
-            total = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream().mapToInt(node -> {
-                if (node.getStats() == null) {
-                    return 0;
-                }
-                return node.getStats().getPlayers();
-            }).sum();
-        }
-
-        return I18n.format("**{0}** Playing Players\n**{1}** Total Players",
-            NumberUtil.formatNicely(playing),
-            NumberUtil.formatNicely(total)
-        );
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        if (!LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+        return "*Lavalink is disabled*";
+//        }
+//
+//        int playing;
+//        int total;
+//
+//        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
+//            playing = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream().mapToInt(node -> {
+//                if (node.getStats() == null) {
+//                    return 0;
+//                }
+//                return node.getStats().getPlayingPlayers();
+//            }).sum();
+//
+//            total = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream().mapToInt(node -> {
+//                if (node.getStats() == null) {
+//                    return 0;
+//                }
+//                return node.getStats().getPlayers();
+//            }).sum();
+//        }
+//
+//        return I18n.format("**{0}** Playing Players\n**{1}** Total Players",
+//            NumberUtil.formatNicely(playing),
+//            NumberUtil.formatNicely(total)
+//        );
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -169,20 +170,21 @@ public class BotStatisticsCommand extends SystemCommand {
 
     private int getAudioListeners() {
         int listeners = 0;
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-                for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-                    if (link.getChannel() != null) {
-                        VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(link.getChannel());
-                        if (voiceChannel != null) {
-                            listeners += voiceChannel.getMembers().size();
-                        }
-                    }
-                }
-            }
-
-            return listeners;
-        }
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+//            synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+//                for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+//                    if (link.getChannel() != null) {
+//                        VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(link.getChannel());
+//                        if (voiceChannel != null) {
+//                            listeners += voiceChannel.getMembers().size();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            return listeners;
+//        }
 
         synchronized (AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
             for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {

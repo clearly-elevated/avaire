@@ -127,26 +127,27 @@ public class LavalinkCommand extends SystemCommand {
         int players = 0,
             total = 0;
 
-        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
-            for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
-                String line = addFillerSpaceToString(socket.getName(), 32);
-
-                if (socket.getStats() == null) {
-                    messages.add(line + "- No stats right now -");
-                    continue;
-                }
-
-                players += socket.getStats().getPlayingPlayers();
-                total += socket.getStats().getPlayers();
-
-                line += String.format("%s / %s",
-                    NumberUtil.formatNicely(socket.getStats().getPlayingPlayers()),
-                    NumberUtil.formatNicely(socket.getStats().getPlayers())
-                );
-
-                messages.add(line);
-            }
-        }
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
+//            for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
+//                String line = addFillerSpaceToString(socket.getName(), 32);
+//
+//                if (socket.getStats() == null) {
+//                    messages.add(line + "- No stats right now -");
+//                    continue;
+//                }
+//
+//                players += socket.getStats().getPlayingPlayers();
+//                total += socket.getStats().getPlayers();
+//
+//                line += String.format("%s / %s",
+//                    NumberUtil.formatNicely(socket.getStats().getPlayingPlayers()),
+//                    NumberUtil.formatNicely(socket.getStats().getPlayers())
+//                );
+//
+//                messages.add(line);
+//            }
+//        }
 
         messages.add(addFillerSpaceToString("", 64, '='));
         messages.add(addFillerSpaceToString("TOTAL STATS", 32) + String.format("%s / %s",
@@ -182,7 +183,8 @@ public class LavalinkCommand extends SystemCommand {
 
         String password = args[3];
 
-        LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().addNode(name, uri, password);
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().addNode(name, uri, password);
 
         context.makeSuccess("Added node: :name @ :uri")
             .set("name", name)
@@ -198,22 +200,23 @@ public class LavalinkCommand extends SystemCommand {
         }
 
         String nodeName = args[1];
-        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes();
-
-        int key = -1;
-        for (int i = 0; i < nodes.size(); i++) {
-            LavalinkSocket node = nodes.get(i);
-            if (node.getName().equals(nodeName)) {
-                key = i;
-                break;
-            }
-        }
-
-        if (key < 0) {
-            return sendErrorMessage(context, "No nodes was found with the name: " + nodeName);
-        }
-
-        LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().removeNode(key);
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes();
+//
+//        int key = -1;
+//        for (int i = 0; i < nodes.size(); i++) {
+//            LavalinkSocket node = nodes.get(i);
+//            if (node.getName().equals(nodeName)) {
+//                key = i;
+//                break;
+//            }
+//        }
+//
+//        if (key < 0) {
+//            return sendErrorMessage(context, "No nodes was found with the name: " + nodeName);
+//        }
+//
+//        LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().removeNode(key);
 
         context.makeSuccess(":node has been removed from the Lavalink runtime.")
             .set("node", nodeName)
@@ -223,67 +226,69 @@ public class LavalinkCommand extends SystemCommand {
     }
 
     private boolean showNode(CommandMessage context, String[] args) {
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().isEmpty()) {
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        if (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().isEmpty()) {
             return sendErrorMessage(context, "There are no remote lavalink nodes registered.");
-        }
+//        }
 
-        if (args.length == 1) {
-            return sendErrorMessage(context, "You must include the name of the node you want to view information for.");
-        }
-
-        String nodeName = args[1];
-        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream()
-            .filter(ll -> ll.getName().equals(nodeName))
-            .collect(Collectors.toList());
-
-        if (nodes.isEmpty()) {
-            return sendErrorMessage(context, "No nodes was found with the name: " + nodeName);
-        }
-
-        LavalinkSocket socket = nodes.get(0);
-
-        RemoteStats stats = socket.getStats();
-
-        List<String> messages = new ArrayList<>();
-
-        messages.add("Name:                    " + socket.getName());
-        messages.add("Host:                    " + (context.getGuild() == null ? socket.getRemoteUri() : "--Redacted--"));
-
-        if (stats == null) {
-            messages.add("\nNo stats have been received from this node! Is the node down?");
-        } else {
-            messages.add("Playing players:         " + stats.getPlayingPlayers());
-            messages.add("Lavalink load:           " + formatPercent(stats.getLavalinkLoad()));
-            messages.add("System load:             " + formatPercent(stats.getSystemLoad()));
-            messages.add("Memory:                  " + stats.getMemUsed() / 1000000 + "MB / " + stats.getMemReservable() / 1000000 + "MB");
-            messages.add("---------------");
-            messages.add("Average frames sent:     " + stats.getAvgFramesSentPerMinute());
-            messages.add("Average frames nulled:   " + stats.getAvgFramesNulledPerMinute());
-            messages.add("Average frames deficit:  " + stats.getAvgFramesDeficitPerMinute());
-            messages.add("---------------");
-
-            LavalinkLoadBalancer.Penalties penalties = LavalinkLoadBalancer.getPenalties(socket);
-            messages.add("Penalties Total:         " + penalties.getTotal());
-            messages.add("Player Penalty:          " + penalties.getPlayerPenalty());
-            messages.add("CPU Penalty:             " + penalties.getCpuPenalty());
-            messages.add("Deficit Frame Penalty:   " + penalties.getDeficitFramePenalty());
-            messages.add("Null Frame Penalty:      " + penalties.getNullFramePenalty());
-            messages.add("Raw: " + penalties.toString());
-        }
-
-        context.getMessageChannel()
-            .sendMessage("```\n" + String.join("\n", messages) + "```")
-            .queue();
-
-        return true;
+//        if (args.length == 1) {
+//            return sendErrorMessage(context, "You must include the name of the node you want to view information for.");
+//        }
+//
+//        String nodeName = args[1];
+//        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream()
+//            .filter(ll -> ll.getName().equals(nodeName))
+//            .collect(Collectors.toList());
+//
+//        if (nodes.isEmpty()) {
+//            return sendErrorMessage(context, "No nodes was found with the name: " + nodeName);
+//        }
+//
+//        LavalinkSocket socket = nodes.get(0);
+//
+//        RemoteStats stats = socket.getStats();
+//
+//        List<String> messages = new ArrayList<>();
+//
+//        messages.add("Name:                    " + socket.getName());
+//        messages.add("Host:                    " + (context.getGuild() == null ? socket.getRemoteUri() : "--Redacted--"));
+//
+//        if (stats == null) {
+//            messages.add("\nNo stats have been received from this node! Is the node down?");
+//        } else {
+//            messages.add("Playing players:         " + stats.getPlayingPlayers());
+//            messages.add("Lavalink load:           " + formatPercent(stats.getLavalinkLoad()));
+//            messages.add("System load:             " + formatPercent(stats.getSystemLoad()));
+//            messages.add("Memory:                  " + stats.getMemUsed() / 1000000 + "MB / " + stats.getMemReservable() / 1000000 + "MB");
+//            messages.add("---------------");
+//            messages.add("Average frames sent:     " + stats.getAvgFramesSentPerMinute());
+//            messages.add("Average frames nulled:   " + stats.getAvgFramesNulledPerMinute());
+//            messages.add("Average frames deficit:  " + stats.getAvgFramesDeficitPerMinute());
+//            messages.add("---------------");
+//
+//            LavalinkLoadBalancer.Penalties penalties = LavalinkLoadBalancer.getPenalties(socket);
+//            messages.add("Penalties Total:         " + penalties.getTotal());
+//            messages.add("Player Penalty:          " + penalties.getPlayerPenalty());
+//            messages.add("CPU Penalty:             " + penalties.getCpuPenalty());
+//            messages.add("Deficit Frame Penalty:   " + penalties.getDeficitFramePenalty());
+//            messages.add("Null Frame Penalty:      " + penalties.getNullFramePenalty());
+//            messages.add("Raw: " + penalties.toString());
+//        }
+//
+//        context.getMessageChannel()
+//            .sendMessage("```\n" + String.join("\n", messages) + "```")
+//            .queue();
+//
+//        return true;
     }
 
     private boolean listNodes(CommandMessage context) {
         List<String> nodes = new ArrayList<>();
-        for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
-            nodes.add("- " + socket.getName());
-            nodes.add("\t*Status:* " + (socket.isAvailable() ? "Connected" : "Disconnected"));
-        }
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
+//            nodes.add("- " + socket.getName());
+//            nodes.add("\t*Status:* " + (socket.isAvailable() ? "Connected" : "Disconnected"));
+//        }
 
         if (nodes.isEmpty()) {
             context.makeInfo("There are no active nodes available").queue();

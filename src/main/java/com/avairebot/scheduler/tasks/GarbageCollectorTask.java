@@ -109,11 +109,13 @@ public class GarbageCollectorTask implements Task {
         // If Lavalink is enabled we'll use the Lavalink link state
         // for the current guild instead of the audio manager.
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            if (isConnected(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLink(
-                next.getValue().getLastActiveMessage().getGuild()
-            ).getState())) {
-                return false;
-            }
+            // TODO: Fix this when Lavalink-Client is updated to support JDA v4
+//             if (isConnected(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLink(
+//                 next.getValue().getLastActiveMessage().getGuild()
+//             ).getState())) {
+//                 return false;
+//             }
+            return false;
         } else {
             if (isConnected(next.getValue().getLastActiveMessage().getGuild().getAudioManager())) {
                 return false;

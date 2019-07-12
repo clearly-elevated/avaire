@@ -22,8 +22,6 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
-import com.avairebot.scheduler.ScheduleHandler;
-import com.avairebot.shared.DiscordConstants;
 import lavalink.client.io.Link;
 import lavalink.client.io.jda.JdaLavalink;
 import lavalink.client.io.jda.JdaLink;
@@ -39,7 +37,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class LavalinkManager {
 
@@ -65,29 +62,30 @@ public class LavalinkManager {
             return;
         }
 
-        lavalink = new JdaLavalink(avaire.getConfig().getString("discord.clientId", "" + DiscordConstants.AVAIRE_BOT_ID),
-            avaire.getSettings().getShardCount() < 1 ? 1 : avaire.getSettings().getShardCount(),
-            shardId -> avaire.getShardManager().getShardById(shardId)
-        );
-        Runtime.getRuntime().addShutdownHook(new Thread(lavalink::shutdown, "lavalink-shutdown-hook"));
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//         lavalink = new JdaLavalink(avaire.getConfig().getString("discord.clientId", "" + DiscordConstants.AVAIRE_BOT_ID),
+//             avaire.getSettings().getShardCount() < 1 ? 1 : avaire.getSettings().getShardCount(),
+//             shardId -> avaire.getShardManager().getShardById(shardId)
+//         );
+//        Runtime.getRuntime().addShutdownHook(new Thread(lavalink::shutdown, "lavalink-shutdown-hook"));
 
-        for (Map<?, ?> node : nodes) {
-            if (!node.containsKey("name") || !node.containsKey("host") || !node.containsKey("pass")) {
-                continue;
-            }
-
-            try {
-                URI host = new URI((String) node.get("host"));
-
-                lavalink.addNode(
-                    (String) node.get("name"), host, (String) node.get("pass")
-                );
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-
-        new LavalinkCollector(lavalink).register();
+//        for (Map<?, ?> node : nodes) {
+//            if (!node.containsKey("name") || !node.containsKey("host") || !node.containsKey("pass")) {
+//                continue;
+//            }
+//
+//            try {
+//                URI host = new URI((String) node.get("host"));
+//
+//                lavalink.addNode(
+//                    (String) node.get("name"), host, (String) node.get("pass")
+//                );
+//            } catch (URISyntaxException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        new LavalinkCollector(lavalink).register();
     }
 
     /**
@@ -108,9 +106,12 @@ public class LavalinkManager {
      * @return The player interface that can be used to communicate with the player.
      */
     IPlayer createPlayer(String guildId) {
-        return isEnabled()
-            ? lavalink.getLink(guildId).getPlayer()
-            : new LavaplayerPlayerWrapper(AudioHandler.getDefaultAudioHandler().getPlayerManager().createPlayer());
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        return isEnabled()
+//            ? lavalink.getLink(guildId).getPlayer()
+//            : new LavaplayerPlayerWrapper(AudioHandler.getDefaultAudioHandler().getPlayerManager().createPlayer());
+
+        return new LavaplayerPlayerWrapper(AudioHandler.getDefaultAudioHandler().getPlayerManager().createPlayer());
     }
 
     /**
@@ -146,16 +147,17 @@ public class LavalinkManager {
         }
 
         if (isEnabled()) {
-            JdaLink link = lavalink.getLink(channel.getGuild());
-
-            if (isLinkBeingDestroyed(link) && !forceOpen) {
-                ScheduleHandler.getScheduler().schedule(
-                    () -> openConnection(channel, true), 500, TimeUnit.MILLISECONDS
-                );
-                return;
-            }
-
-            link.connect(channel);
+            // TODO: Fix this when Lavalink-Client is updated to support JDA v4
+//            JdaLink link = lavalink.getLink(channel.getGuild());
+//
+//            if (isLinkBeingDestroyed(link) && !forceOpen) {
+//                ScheduleHandler.getScheduler().schedule(
+//                    () -> openConnection(channel, true), 500, TimeUnit.MILLISECONDS
+//                );
+//                return;
+//            }
+//
+//            link.connect(channel);
         }
     }
 
@@ -166,11 +168,12 @@ public class LavalinkManager {
      */
     public void closeConnection(Guild guild) {
         if (isEnabled()) {
-            JdaLink link = lavalink.getLink(guild);
-
-            if (!isLinkBeingDestroyed(link)) {
-                link.disconnect();
-            }
+            // TODO: Fix this when Lavalink-Client is updated to support JDA v4
+//            JdaLink link = lavalink.getLink(guild);
+//
+//            if (!isLinkBeingDestroyed(link)) {
+//                link.disconnect();
+//            }
         } else {
             guild.getAudioManager().closeAudioConnection();
         }

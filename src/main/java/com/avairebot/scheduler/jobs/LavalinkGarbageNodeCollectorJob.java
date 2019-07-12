@@ -56,22 +56,23 @@ public class LavalinkGarbageNodeCollectorJob extends Job {
             return;
         }
 
-        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-            Iterator<JdaLink> iterator = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks().iterator();
-
-            while (iterator.hasNext()) {
-                JdaLink next = iterator.next();
-                if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkInState(next, Link.State.DESTROYING)) {
-                    continue;
-                }
-
-                Integer value = CacheUtil.getUncheckedUnwrapped(cache, next.getGuildIdLong());
-                cache.put(next.getGuildIdLong(), value + 1);
-
-                if (value > 3) {
-                    iterator.remove();
-                }
-            }
-        }
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+//            Iterator<JdaLink> iterator = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks().iterator();
+//
+//            while (iterator.hasNext()) {
+//                JdaLink next = iterator.next();
+//                if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkInState(next, Link.State.DESTROYING)) {
+//                    continue;
+//                }
+//
+//                Integer value = CacheUtil.getUncheckedUnwrapped(cache, next.getGuildIdLong());
+//                cache.put(next.getGuildIdLong(), value + 1);
+//
+//                if (value > 3) {
+//                    iterator.remove();
+//                }
+//            }
+//        }
     }
 }

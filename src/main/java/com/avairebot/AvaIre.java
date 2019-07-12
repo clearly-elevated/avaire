@@ -635,16 +635,17 @@ public class AvaIre {
         }
 
         if (isNas()) {
-            builder.setAudioSendFactory(new NativeAudioSendFactory(800));
+            // TODO: Fix this by updating Lavalink to a newer version that supports the new Audio Send Factory.
+            // builder.setAudioSendFactory(new NativeAudioSendFactory(800));
         }
 
         builder
             .addEventListeners(new MainEventHandler(this))
             .addEventListeners(new GenericEventHandler(this));
 
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink());
-        }
+//        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+//            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink());
+//        }
 
         for (PluginLoader plugin : getPluginManager().getPlugins()) {
             for (ListenerAdapter listener : plugin.getEventListeners()) {

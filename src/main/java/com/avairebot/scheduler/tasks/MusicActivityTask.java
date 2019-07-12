@@ -130,74 +130,75 @@ public class MusicActivityTask implements Task {
     }
 
     private void handleLavalinkNodes(AvaIre avaire) {
-        for (JdaLink link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-            long guildId = link.getGuildIdLong();
-
-            try {
-                if (!AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(guildId)) {
-                    handleEmptyMusic(avaire, null, link, null, guildId);
-                    continue;
-                }
-
-                GuildMusicManager guildMusicManager = AudioHandler.getDefaultAudioHandler().musicManagers.get(guildId);
-                if (guildMusicManager.getLastActiveMessage() == null) {
-                    continue;
-                }
-
-                if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
-                    handleEmptyMusic(avaire, null, link, guildMusicManager, guildId);
-                    continue;
-                }
-
-                if (emptyQueue.containsKey(guildId)) {
-                    emptyQueue.remove(guildId);
-                }
-
-                if (guildMusicManager.getPlayer().isPaused()) {
-                    handlePausedMusic(avaire, null, link, guildMusicManager, guildId);
-                    continue;
-                }
-
-                String channel = link.getChannel();
-                if (channel == null) {
-                    continue;
-                }
-
-                VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(channel);
-
-                if (voiceChannel != null) {
-                    boolean hasListeners = false;
-                    for (Member member : voiceChannel.getMembers()) {
-                        if (member.getUser().isBot()) {
-                            continue;
-                        }
-
-                        if (member.getVoiceState().isDeafened()) {
-                            continue;
-                        }
-
-                        hasListeners = true;
-                        break;
-                    }
-
-                    if (hasListeners && !guildMusicManager.getLastActiveMessage().getGuild().getSelfMember().getVoiceState().isMuted()) {
-                        missingListener.remove(guildId);
-                        continue;
-                    }
-
-                    int times = missingListener.getOrDefault(guildId, 0) + 1;
-
-                    if (times <= getValue(avaire, "missing-listeners", 5)) {
-                        missingListener.put(guildId, times);
-                        continue;
-                    }
-                }
-
-                clearItems(null, link, guildMusicManager, guildId);
-            } catch (Exception e) {
-                AvaIre.getLogger().error("An exception occurred during music activity job for ID: {} - Message: " + e.getMessage(), guildId, e);
-            }
-        }
+        // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//        for (JdaLink link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+//            long guildId = link.getGuildIdLong();
+//
+//            try {
+//                if (!AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(guildId)) {
+//                    handleEmptyMusic(avaire, null, link, null, guildId);
+//                    continue;
+//                }
+//
+//                GuildMusicManager guildMusicManager = AudioHandler.getDefaultAudioHandler().musicManagers.get(guildId);
+//                if (guildMusicManager.getLastActiveMessage() == null) {
+//                    continue;
+//                }
+//
+//                if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
+//                    handleEmptyMusic(avaire, null, link, guildMusicManager, guildId);
+//                    continue;
+//                }
+//
+//                if (emptyQueue.containsKey(guildId)) {
+//                    emptyQueue.remove(guildId);
+//                }
+//
+//                if (guildMusicManager.getPlayer().isPaused()) {
+//                    handlePausedMusic(avaire, null, link, guildMusicManager, guildId);
+//                    continue;
+//                }
+//
+//                String channel = link.getChannel();
+//                if (channel == null) {
+//                    continue;
+//                }
+//
+//                VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(channel);
+//
+//                if (voiceChannel != null) {
+//                    boolean hasListeners = false;
+//                    for (Member member : voiceChannel.getMembers()) {
+//                        if (member.getUser().isBot()) {
+//                            continue;
+//                        }
+//
+//                        if (member.getVoiceState().isDeafened()) {
+//                            continue;
+//                        }
+//
+//                        hasListeners = true;
+//                        break;
+//                    }
+//
+//                    if (hasListeners && !guildMusicManager.getLastActiveMessage().getGuild().getSelfMember().getVoiceState().isMuted()) {
+//                        missingListener.remove(guildId);
+//                        continue;
+//                    }
+//
+//                    int times = missingListener.getOrDefault(guildId, 0) + 1;
+//
+//                    if (times <= getValue(avaire, "missing-listeners", 5)) {
+//                        missingListener.put(guildId, times);
+//                        continue;
+//                    }
+//                }
+//
+//                clearItems(null, link, guildMusicManager, guildId);
+//            } catch (Exception e) {
+//                AvaIre.getLogger().error("An exception occurred during music activity job for ID: {} - Message: " + e.getMessage(), guildId, e);
+//            }
+//        }
     }
 
     private void handleEmptyMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {

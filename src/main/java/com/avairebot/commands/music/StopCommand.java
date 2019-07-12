@@ -24,14 +24,12 @@ package com.avairebot.commands.music;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
-import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.scheduler.tasks.MusicActivityTask;
 import com.avairebot.utilities.RestActionUtil;
-import lavalink.client.io.jda.JdaLink;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -104,14 +102,15 @@ public class StopCommand extends Command {
         MusicActivityTask.playerPaused.remove(guildId);
         MusicActivityTask.emptyQueue.remove(guildId);
 
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                .getLink(context.getGuild());
-
-            if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
-                link.destroy();
-            }
-        }
+        // TODO: Fix this when Lavalink-Client is updated to support JDA v4
+//        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+//            JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
+//                .getLink(context.getGuild());
+//
+//            if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+//                link.destroy();
+//            }
+//        }
 
         musicManager.getScheduler().nextTrack(false);
 

@@ -175,15 +175,16 @@ public class GuildStateEventAdapter extends EventAdapter {
 
             musicManager.getScheduler().nextTrack(false);
 
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-                JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                    .getLink(String.valueOf(guildId));
-
-
-                if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
-                    link.destroy();
-                }
-            }
+            // TODO: Fix this when Lavalink-Client gets an update for JDA v4
+//            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+//                JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
+//                    .getLink(String.valueOf(guildId));
+//
+//
+//                if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+//                    link.destroy();
+//                }
+//            }
         });
     }
 }
