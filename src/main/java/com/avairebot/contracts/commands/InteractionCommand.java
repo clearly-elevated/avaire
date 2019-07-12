@@ -33,7 +33,6 @@ import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 

@@ -24,7 +24,6 @@ package com.avairebot.handlers;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.GenericEvent;
 
 import javax.annotation.Nonnull;

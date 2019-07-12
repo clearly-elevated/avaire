@@ -24,15 +24,11 @@ package com.avairebot.scheduler.jobs;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Job;
-import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import lavalink.client.io.Link;
-import lavalink.client.io.jda.JdaLink;
 
 import javax.annotation.Nonnull;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 public class LavalinkGarbageNodeCollectorJob extends Job {

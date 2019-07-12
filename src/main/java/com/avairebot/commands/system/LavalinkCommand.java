@@ -27,9 +27,6 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.utilities.NumberUtil;
-import lavalink.client.io.LavalinkLoadBalancer;
-import lavalink.client.io.LavalinkSocket;
-import lavalink.client.io.RemoteStats;
 import net.dv8tion.jda.api.MessageBuilder;
 
 import javax.annotation.Nonnull;
@@ -39,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LavalinkCommand extends SystemCommand {
 
@@ -228,7 +224,7 @@ public class LavalinkCommand extends SystemCommand {
     private boolean showNode(CommandMessage context, String[] args) {
         // TODO: Fix this when Lavalink-Client gets an update for JDA v4
 //        if (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().isEmpty()) {
-            return sendErrorMessage(context, "There are no remote lavalink nodes registered.");
+        return sendErrorMessage(context, "There are no remote lavalink nodes registered.");
 //        }
 
 //        if (args.length == 1) {
