@@ -62,21 +62,21 @@ discord:
   # create one, once you have it, replace the text between the
   # quotes with your client id.
   #
-  clientId: 'YourBotClientIdShouldGoHere'
+  clientId: '600860627681935371'
 
   # This is your Discord application token, if you don't have a Discord
   # application, check the link above and follow the short guide to
   # create one, once you have it, replace the text between the
   # quotes with your token.
   #
-  token: 'YourBotTokenShouldGoHere'
+  token: 'NjAwODYwNjI3NjgxOTM1Mzcx.XVoVJw.vEvVQ608qaX4dUkS8CA_noemvl0'
 
   # This is the OAuth2 URL used for invite links, you should replace
   # the "<client_id>" with your Discord application client ID to
   # make the link valid so people can actually use it to invite
   # your bot to their server.
   #
-  oauth: 'https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303'
+  oauth: 'https://discordapp.com/oauth2/authorize?&client_id=600860627681935371&scope=bot&permissions=66186303'
 
 #--------------------------------------------------------------------------
 # Database Information
@@ -349,7 +349,7 @@ audio-quality:
 #
 
 botAccess:
-  - '88739639380172800'
+  - '542058542853521461'
 
 #--------------------------------------------------------------------------
 # Sentry.io Error Logging
@@ -364,7 +364,7 @@ botAccess:
 # To learn more, checkout: https://sentry.io/welcome/
 #
 
-sentryDsn: ''
+sentryDsn: 'https://6fe0e2fc25cf4cda82af6a3a6ade09e6@sentry.io/1533257'
 
 #--------------------------------------------------------------------------
 # Web Servlet - Prometheus Metrics & API
@@ -535,7 +535,7 @@ apiKeys:
   #
   # Get a key at: https://meow.senither.com/
   #
-  meowApi: ''
+  meowApi: 'https://meow.senither.com/v1/random'
 
   # Open Weather Map is a free service that provides lots of ways to get weather
   # and wind data based on a location, Ava uses it for the weather command, if
