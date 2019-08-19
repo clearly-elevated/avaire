@@ -150,11 +150,11 @@ database:
   # the database, the user should have permission to create, read,
   # update and delete tables in order for Ava to work correctly.
   #
-  username: 'username'
+  username: 'ClearlyElevated'
 
   # The password for the database user, used to access the database.
   #
-  password: 'password'
+  password: '1234'
 
   # Determine if server certificates should be verified upon connecting to
   # the database, disabling this will still allow for a valid connection
@@ -488,7 +488,7 @@ vote-lock:
   # however if the option is set to true, the "vote-sync-token" will not be
   # used, and requests will instead be redirected to Avas public API to
   # try and sync votes made for the public bot.
-  sync-with-public-bot: false
+  sync-with-public-bot: true
 
   # This is the bot application API token for DBL(Discord Bot List), the API token
   # is used to sync votes between the API and the bot during startup, so anyone
@@ -535,7 +535,7 @@ apiKeys:
   #
   # Get a key at: https://meow.senither.com/
   #
-  meowApi: 'https://meow.senither.com/v1/random'
+  meowApi: ''
 
   # Open Weather Map is a free service that provides lots of ways to get weather
   # and wind data based on a location, Ava uses it for the weather command, if
